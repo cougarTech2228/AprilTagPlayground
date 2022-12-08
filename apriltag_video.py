@@ -60,9 +60,9 @@ def apriltag_video(input_streams=[0], # '../media/input/single_tag.mp4', '../med
                                                    detector,
                                                    camera_params=(622.27892, 622.97536, 333.70651, 211.43233),
                                                    tag_size=0.1397,
-                                                   vizualization=3,
+                                                   vizualization=0,
                                                    verbose=0,
-                                                   annotation=True
+                                                   annotation=False
                                                   )
 
             if result:
