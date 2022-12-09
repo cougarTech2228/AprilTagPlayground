@@ -42,7 +42,6 @@ def apriltag_video(input_streams=[0], # '../media/input/single_tag.mp4', '../med
     logging.basicConfig(level=logging.DEBUG)
 
     NetworkTables.initialize(server="10.22.28.2")
-    #NetworkTables.startClientTeam(2228)
 
     at_table = NetworkTables.getTable("AprilTag")
 
@@ -68,9 +67,13 @@ def apriltag_video(input_streams=[0], # '../media/input/single_tag.mp4', '../med
             if result:
 
                 hamming_error = result[0].hamming
+                decision_margin = result[0].decision_margin
 
-                if (hamming_error == 0):
-    
+                # See this link for tuning results and where the magic numbers below came from:
+                # https://docs.photonvision.org/en/latest/docs/getting-started/pipeline-tuning/apriltag-tuning.html
+
+                if ((hamming_error == 0) and (decision_margin > 30)):
+
                     print('Tag ID: {}'.format(result[0].tag_id))
                     at_table.putNumber("Tag ID", result[0].tag_id)
                     tag_id_property = result[0].tag_id
@@ -80,7 +83,7 @@ def apriltag_video(input_streams=[0], # '../media/input/single_tag.mp4', '../med
                     r31 = result[1][2][0]
                     r32 = result[1][2][1]
                     r33 = result[1][2][2]
-                
+
                     yaw = "{:.2f}".format(np.degrees(np.arctan2(r21, r11)))
                     pitch = "{:.2f}".format(np.degrees(np.arctan2(-r31, math.sqrt(r32**2 + r33**2))))
                     roll = "{:.2f}".format(np.degrees(np.arctan2(r32, r33)))
