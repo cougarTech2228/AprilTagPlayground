@@ -122,16 +122,13 @@ def apriltag_video(input_streams=[0], # '../media/input/single_tag.mp4', '../med
                 #else:
                 #    at_table.putNumber("Tag ID", 2228)
 
-            #else:
-            #    at_table.putNumber("Tag ID", 2228)
-
+            else:
+                at_table.putNumber("Tag ID", 2228)
 
             if display_stream:
                 cv2.imshow(detection_window_name, overlay)
                 if cv2.waitKey(1) & 0xFF == ord(' '): # Press space bar to terminate
                     break
-
-            #time.sleep(0.01)
 
 ################################################################################
 
