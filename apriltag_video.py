@@ -101,16 +101,16 @@ def apriltag_video(input_streams=[0], # '../media/input/single_tag.mp4', '../med
                     pitch = "{:.2f}".format(np.degrees(np.arctan2(-r31, math.sqrt(r32**2 + r33**2))))
                     roll = "{:.2f}".format(np.degrees(np.arctan2(r32, r33)))
 
-                    at_table.putNumber("Yaw", yaw)
+                    #at_table.putNumber("Yaw", yaw)
                     at_table.putNumber("Pitch", pitch)
-                    at_table.putNumber("Roll", roll)
+                    #at_table.putNumber("Roll", roll)
 
                     tx = "{:.4f}".format(result[1][0][3])
                     ty = "{:.4f}".format(result[1][1][3])
                     tz = "{:.4f}".format(result[1][2][3])
 
                     at_table.putNumber("TX", tx)
-                    at_table.putNumber("TY", ty)
+                    #at_table.putNumber("TY", ty)
                     at_table.putNumber("TZ", tz)
 
                     #print(result[0].tostring())
