@@ -6,6 +6,7 @@ import cv2
 import apriltag
 import numpy as np
 import math
+import time
 from networktables import NetworkTables
 from networktables.util import ntproperty
 import logging
@@ -54,6 +55,18 @@ def apriltag_video(input_streams=[0], # '../media/input/single_tag.mp4', '../med
             success, frame = video.read()
             if not success:
                 break
+
+            # From ROS2 Camera Calibration Tool
+            # | fx  0 cx
+            # |  0 fy cy
+            # |  0  0  1
+
+            # MS HD 3000 Webcam in blue electrical box
+            # 622.27892, 622.97536, 333.70651, 211.43233
+            # MS HD 3000 Webcam in black mount with white LED ring
+            # 734.626748, 726.761294, 411.819409, 263.823832
+            # Note: The calibration values from the blue box work better with the 
+            # camera so we'll use those for now..
 
             result, overlay = apriltag.detect_tags(frame,
                                                    detector,
@@ -107,16 +120,18 @@ def apriltag_video(input_streams=[0], # '../media/input/single_tag.mp4', '../med
                     print("============================================")
 
                 #else:
-                #    at_table.putNumber("Tag ID", -1)
+                #    at_table.putNumber("Tag ID", 2228)
 
             #else:
-            #    at_table.putNumber("Tag ID", -1)
+            #    at_table.putNumber("Tag ID", 2228)
 
 
             if display_stream:
                 cv2.imshow(detection_window_name, overlay)
                 if cv2.waitKey(1) & 0xFF == ord(' '): # Press space bar to terminate
                     break
+
+            #time.sleep(0.01)
 
 ################################################################################
 
