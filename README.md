@@ -38,7 +38,7 @@ After the reboot has completed, login and ...
 - $cd scripts
 - $python3 apriltag_video.py
 
-Note: If no tags are detected, nothing will print to the screen.
+Note: If no tags are detected, a "No Results" message will be printed to the screen.
 
 ## File Modifications
 
@@ -48,4 +48,4 @@ Note: If no tags are detected, nothing will print to the screen.
 ## Notes on OutlineViewer application
 
 - Setup OutlineViewer in "Client Mode" with Team/IP = 2228
-- Should see an AprilTag table with status values for tag id, yaw, pitch, roll, tx, ty, tz
+- Should see an AprilTag table with status values for tag id, pitch, tx, tz

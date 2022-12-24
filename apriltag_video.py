@@ -50,6 +50,8 @@ def apriltag_video(input_streams=[0], # '../media/input/single_tag.mp4', '../med
 
         video = cv2.VideoCapture(stream)
 
+        missed_detections = 0
+
         while(video.isOpened()):
 
             success, frame = video.read()
@@ -78,6 +80,8 @@ def apriltag_video(input_streams=[0], # '../media/input/single_tag.mp4', '../med
                                                   )
 
             if result:
+
+                missed_detections = 0
 
                 hamming_error = result[0].hamming
                 decision_margin = result[0].decision_margin
@@ -115,15 +119,21 @@ def apriltag_video(input_streams=[0], # '../media/input/single_tag.mp4', '../med
 
                     #print(result[0].tostring())
 
-                    print(f'TX: {tx} TY: {ty} TZ: {tz}')
-                    print(f'Yaw: {yaw} Pitch: {pitch} Roll: {roll}')
+                    #print(f'TX: {tx} TY: {ty} TZ: {tz}')
+                    #print(f'Yaw: {yaw} Pitch: {pitch} Roll: {roll}')
+                    print(f'TZ: {tz} TX: {tx} Pitch: {pitch}')
                     print("============================================")
 
                 #else:
                 #    at_table.putNumber("Tag ID", 2228)
 
             else:
-                at_table.putNumber("Tag ID", 2228)
+                missed_detections += 1
+
+                if (missed_detections > 3):
+                    at_table.putNumber("Tag ID", 2228)
+
+                print("!!!!!!!!!!!!!!!No result returned!!!!!!!!!!!!!!!!!")
 
             if display_stream:
                 cv2.imshow(detection_window_name, overlay)
