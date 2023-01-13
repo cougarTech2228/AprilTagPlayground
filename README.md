@@ -31,9 +31,8 @@ After the reboot has completed, login and ...
 - $pip install opencv-python
 - $sudo apt-get install libgl1
 
-## Executing the AprilTag detection script
+## Executing the AprilTag detection script manually
 
-- TODO: We'll want to add this to the startup scripts so we don't have to manually invoke it
 - $cd AprilTag
 - $cd scripts
 - $python3 apriltag_video.py
@@ -49,3 +48,16 @@ Note: If no tags are detected, a "No Results" message will be printed to the scr
 
 - Setup OutlineViewer in "Client Mode" with Team/IP = 2228
 - Should see an AprilTag table with status values for tag id, pitch, tx, tz
+
+## Get the Pi to wait for a network connection before completing boot
+
+- In the /etc/netplan/...yaml file make sure that "optional" under eth0 is set to false
+
+## Don't try to use NetworkTables until the network is available
+
+- See more information here: https://robotpy.readthedocs.io/en/stable/guide/nt.html
+
+## Need to execute the apriltag_video.py python scripts at startup
+
+- Followed this tutorial: https://www.dexterindustries.com/howto/auto-run-python-programs-on-the-raspberry-pi/
+
