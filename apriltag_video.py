@@ -46,11 +46,11 @@ def apriltag_video(input_streams=[0], # '../media/input/single_tag.mp4', '../med
 
     at_table = NetworkTables.getTable("AprilTag")
 
+    missed_detections = 0
+
     for stream in input_streams:
 
         video = cv2.VideoCapture(stream)
-
-        missed_detections = 0
 
         while(video.isOpened()):
 
@@ -81,8 +81,6 @@ def apriltag_video(input_streams=[0], # '../media/input/single_tag.mp4', '../med
 
             if result:
 
-                missed_detections = 0
-
                 hamming_error = result[0].hamming
                 decision_margin = result[0].decision_margin
 
@@ -90,6 +88,8 @@ def apriltag_video(input_streams=[0], # '../media/input/single_tag.mp4', '../med
                 # https://docs.photonvision.org/en/latest/docs/getting-started/pipeline-tuning/apriltag-tuning.html
 
                 if ((hamming_error == 0) and (decision_margin > 30)):
+
+                    missed_detections = 0
 
                     print('Tag ID: {}'.format(result[0].tag_id))
                     at_table.putNumber("Tag ID", result[0].tag_id)
@@ -128,12 +128,8 @@ def apriltag_video(input_streams=[0], # '../media/input/single_tag.mp4', '../med
                 #    at_table.putNumber("Tag ID", 2228)
 
             else:
-                missed_detections += 1
-
-                if (missed_detections > 3):
-                    at_table.putNumber("Tag ID", 2228)
-
-                print("!!!!!!!!!!!!!!!No result returned!!!!!!!!!!!!!!!!!")
+                at_table.putNumber("Tag ID", 2228)
+                print("!!!!!!!!!!!!!!!No result returned !!!!!!!!!!!!!!!!!")
 
             if display_stream:
                 cv2.imshow(detection_window_name, overlay)
