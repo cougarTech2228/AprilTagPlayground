@@ -51,7 +51,7 @@ Note: If no tags are detected, a "No Results" message will be printed to the scr
 
 ## Get the Pi to wait for a network connection before completing boot
 
-- In the /etc/netplan/...yaml file make sure that "optional" under eth0 is set to false
+- In the /etc/netplan/50-cloud-init.yaml file make sure that "optional" under eth0 is set to false
 
 ## Don't try to use NetworkTables until the network is available
 
@@ -61,3 +61,9 @@ Note: If no tags are detected, a "No Results" message will be printed to the scr
 
 - Followed this tutorial: https://www.dexterindustries.com/howto/auto-run-python-programs-on-the-raspberry-pi/
 
+## Turning off the wifi and bluetooth capabilities of the Pi
+
+- $sudo nano /etc/boot/firmware/config.txt
+- Add the following lines:
+- $dtoverlay=disable-wifi
+- $dtoverlay=disable-bt
