@@ -62,8 +62,6 @@ def apriltag_video(input_streams=[0], # '../media/input/single_tag.mp4', '../med
 
     at_table = NetworkTables.getTable("AprilTag")
 
-    missed_detections = 0
-
     for stream in input_streams:
 
         video = cv2.VideoCapture(stream)
@@ -105,12 +103,6 @@ def apriltag_video(input_streams=[0], # '../media/input/single_tag.mp4', '../med
 
                 if ((hamming_error == 0) and (decision_margin > 30)):
 
-                    missed_detections = 0
-
-                    print('Tag ID: {}'.format(result[0].tag_id))
-                    at_table.putNumber("Tag ID", result[0].tag_id)
-                    tag_id_property = result[0].tag_id
-
                     r11 = result[1][0][0]
                     r21 = result[1][1][0]
                     r31 = result[1][2][0]
@@ -121,27 +113,30 @@ def apriltag_video(input_streams=[0], # '../media/input/single_tag.mp4', '../med
                     pitch = "{:.2f}".format(np.degrees(np.arctan2(-r31, math.sqrt(r32**2 + r33**2))))
                     roll = "{:.2f}".format(np.degrees(np.arctan2(r32, r33)))
 
-                    #at_table.putNumber("Yaw", yaw)
-                    at_table.putNumber("Pitch", pitch)
-                    #at_table.putNumber("Roll", roll)
-
                     tx = "{:.4f}".format(result[1][0][3])
                     ty = "{:.4f}".format(result[1][1][3])
                     tz = "{:.4f}".format(result[1][2][3])
 
-                    at_table.putNumber("TX", tx)
-                    #at_table.putNumber("TY", ty)
-                    at_table.putNumber("TZ", tz)
+                    if ((result[1][0][3] < 1.0) and (result[1][0][3] > -1.0)):
 
-                    #print(result[0].tostring())
+                        print('Tag ID: {}'.format(result[0].tag_id))
+                        at_table.putNumber("Tag ID", result[0].tag_id)
+                        tag_id_property = result[0].tag_id
 
-                    #print(f'TX: {tx} TY: {ty} TZ: {tz}')
-                    #print(f'Yaw: {yaw} Pitch: {pitch} Roll: {roll}')
-                    print(f'TZ: {tz} TX: {tx} Pitch: {pitch}')
-                    print("============================================")
+                        #at_table.putNumber("Yaw", yaw)
+                        at_table.putNumber("Pitch", pitch)
+                        #at_table.putNumber("Roll", roll)
 
-                #else:
-                #    at_table.putNumber("Tag ID", 2228)
+                        at_table.putNumber("TX", tx)
+                        #at_table.putNumber("TY", ty)
+                        at_table.putNumber("TZ", tz)
+
+                        #print(result[0].tostring())
+
+                        #print(f'TX: {tx} TY: {ty} TZ: {tz}')
+                        #print(f'Yaw: {yaw} Pitch: {pitch} Roll: {roll}')
+                        print(f'TZ: {tz} TX: {tx} Pitch: {pitch}')
+                        print("============================================")
 
             else:
                 at_table.putNumber("Tag ID", 2228)
